@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="{{ request.args.get('lang', 'en') }}">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Smart Krishi{% endblock %}</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+    <style>
+        html, body { height: 100%; margin: 0; }
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: #f0f8ff;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .page-content { flex: 1; }
+
+        /* Sidebar */
+        .sidebar {
+            background: #43a047;
+            width: 100%;
+            padding: 10px 0;
+            color: #fff;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            position: sticky;
+            top: 0;
+            z-index: 1020;
+            animation: slideDown 1s ease-out;
+        }
+        .sidebar a { color: #fff; text-decoration: none; font-weight: 500; transition: all 0.3s ease; }
+        .sidebar a:hover { text-decoration: underline; transform: scale(1.1); }
+
+        /* Alerts */
+        .alert-notification { position: fixed; top: 10px; right: 10px; z-index: 1050; animation: fadeIn 0.5s ease; }
+
+        /* Welcome Section */
+        .welcome-section {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 80vh;
+            color: #fff;
+            text-align: center;
+            padding: 20px;
+            background: linear-gradient(135deg, #81d4fa, #a5d6a7);
+            background-size: 400% 400%;
+            animation: gradientAnimation 15s ease infinite, fadeIn 1.5s ease;
+            overflow: hidden;
+        }
+        .welcome-section h1 { font-size: 3rem; margin-bottom: 20px; animation: slideUp 1s ease; z-index: 1; position: relative; }
+        .welcome-section p { font-size: 1.2rem; margin-bottom: 30px; max-width: 700px; z-index: 1; position: relative; }
+        .welcome-section .btn { width: 150px; font-weight: bold; margin: 0 10px; transition: all 0.3s ease; z-index: 1; position: relative; }
+        .welcome-section .btn:hover { transform: translateY(-3px) scale(1.05); }
+
+        /* Feature Boxes */
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 40px;
+            width: 100%;
+            max-width: 1200px;
+        }
+        .feature-box { background: rgba(255,255,255,0.15); border-radius: 10px; padding: 20px; text-align: center; transition: transform 0.3s ease; }
+        .feature-box:hover { transform: translateY(-5px) scale(1.02); }
+
+        /* Footer */
+        footer { animation: fadeIn 1s ease; }
+
+        /* Animations */
+        @keyframes fadeIn { 0% { opacity: 0; } 100% { opacity: 1; } }
+        @keyframes slideDown { 0% { transform: translateY(-50px); opacity: 0; } 100% { transform: translateY(0); opacity: 1; } }
+        @keyframes slideUp { 0% { transform: translateY(50px); opacity: 0; } 100% { transform: translateY(0); opacity: 1; } }
+        @keyframes gradientAnimation { 0%{background-position:0% 50%;} 50%{background-position:100% 50%;} 100%{background-position:0% 50%;} }
+    </style>
+    {% block styles %}{% endblock %}
+</head>
+<body>
+
+<!-- 🌐 Language Switch (Top Right) -->
+<div style="position: absolute; top: 10px; right: 20px; z-index: 2000;">
+    <a href="?lang=en">English</a> |
+    <a href="?lang=te">తెలుగు</a>
+</div>
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        <div class="alert-notification">
+            {% for category, message in messages %}
+                <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+{% endwith %}
+
+<div class="page-content">
+    {% if request.endpoint == 'home' %}
+        <!-- Home / Welcome Section -->
+        <div class="welcome-section">
+            {% if request.args.get('lang') == 'te' %}
+                <h1>స్మార్ట్ కృషికి స్వాగతం</h1>
+                <p>స్మార్ట్ మరియు సుస్థిర వ్యవసాయానికి మీ వ్యక్తిగత సహాయకుడు.</p>
+                <div>
+                    <a href="{{ url_for('signup', lang='te') }}" class="btn btn-success btn-lg">సైన్ అప్</a>
+                    <a href="{{ url_for('login', lang='te') }}" class="btn btn-primary btn-lg">లాగిన్</a>
+                </div>
+                <div class="feature-grid mt-4">
+                    <div class="feature-box">
+                        <h4><i class="bi bi-thermometer-half"></i> మట్టి విశ్లేషణ</h4>
+                        <p>పంట పెరుగుదల కోసం మట్టి పోషకాలు, pH మరియు ఆరోగ్యాన్ని పరిశీలించండి.</p>
+                    </div>
+                    <div class="feature-box">
+                        <h4><i class="bi bi-emoji-sunglasses"></i> పంట గుర్తింపు</h4>
+                        <p>చిత్రాలను అప్లోడ్ చేసి పంట వ్యాధులను తక్షణమే గుర్తించండి.</p>
+                    </div>
+                    <div class="feature-box">
+                        <h4><i class="bi bi-cloud-sun"></i> వాతావరణం & నీరుపారుదల</h4>
+                        <p>మెరుగైన దిగుబడి కోసం వాతావరణ అప్‌డేట్‌లు మరియు నీటిపారుదల సూచనలను పొందండి.</p>
+                    </div>
+                    <div class="feature-box">
+                        <h4><i class="bi bi-card-text"></i> సహాయ కార్డు</h4>
+                        <p>వ్యవసాయ నిర్వహణ కోసం సిఫారసులు మరియు మార్గదర్శకాలను డౌన్‌లోడ్ చేయండి.</p>
+                    </div>
+                </div>
+            {% else %}
+                <h1>Welcome to Smart Krishi</h1>
+                <p>Your personal farming assistant app for smarter and sustainable agriculture.</p>
+                <div>
+                    <a href="{{ url_for('signup', lang='en') }}" class="btn btn-success btn-lg">Signup</a>
+                    <a href="{{ url_for('login', lang='en') }}" class="btn btn-primary btn-lg">Login</a>
+                </div>
+                <div class="feature-grid mt-4">
+                    <div class="feature-box">
+                        <h4><i class="bi bi-thermometer-half"></i> Soil Analyzer</h4>
+                        <p>Monitor soil nutrients, pH, and health to optimize crop growth.</p>
+                    </div>
+                    <div class="feature-box">
+                        <h4><i class="bi bi-emoji-sunglasses"></i> Crop Detection</h4>
+                        <p>Detect crop diseases instantly by uploading images.</p>
+                    </div>
+                    <div class="feature-box">
+                        <h4><i class="bi bi-cloud-sun"></i> Weather & Irrigation</h4>
+                        <p>Get weather updates and irrigation suggestions for better yield.</p>
+                    </div>
+                    <div class="feature-box">
+                        <h4><i class="bi bi-card-text"></i> Help Card</h4>
+                        <p>Download recommendations and guidance for farm management.</p>
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+    {% else %}
+        {% if session.get('email') %}
+        <!-- Sidebar + Main Content -->
+        <div class="sidebar">
+            <a href="{{ url_for('dashboard', lang=request.args.get('lang','en')) }}">Dashboard</a>
+            <a href="{{ url_for('soil', lang=request.args.get('lang','en')) }}">Soil Analyzer</a>
+            <a href="{{ url_for('upload', lang=request.args.get('lang','en')) }}">Crop Upload</a>
+            <a href="{{ url_for('help_card', lang=request.args.get('lang','en')) }}">Help Card</a>
+			 <a href="{{ url_for('weather_page', lang=request.args.get('lang','en')) }}">Weather</a>
+            <a href="{{ url_for('logout', lang=request.args.get('lang','en')) }}">Logout</a>
+            <div style="margin-left:10px;">
+                <a href="?lang=en" style="color:white;">English</a> |
+                <a href="?lang=te" style="color:white;">తెలుగు</a>
+            </div>
+        </div>
+        {% endif %}
+        <div class="container-fluid p-4">
+            {% block content %}{% endblock %}
+        </div>
+    {% endif %}
+</div>
+
+<footer class="text-center mt-4 py-3" style="background:#e8f5e9;">
+    &copy; {{ now.year }} Smart Krishi. All Rights Reserved.
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+{% block scripts %}{% endblock %}
+</body>
+</html>

@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block title %}Crop/Leaf Detector{% endblock %}
+{% block content %}
+<h2>Crop/Leaf Detector</h2>
+<form method="POST" enctype="multipart/form-data">
+  <input type="file" name="photo" class="form-control mb-2" required>
+  <button class="btn btn-success" type="submit">Detect Disease</button>
+</form>
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+    {% for category, message in messages %}
+      <div class="alert alert-{{ category }} mt-3">{{ message }}</div>
+    {% endfor %}
+  {% endif %}
+{% endwith %}
+{% endblock %}

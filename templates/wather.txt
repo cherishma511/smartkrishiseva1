@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block title %}Weather Updates - Smart Krishi{% endblock %}
+
+{% block content %}
+<div class="container mt-5" style="max-width: 600px;">
+    <h2 class="text-primary mb-4">🌦 Weather in {{ city }} / {{ city }} లో వాతావరణం</h2>
+
+    <div class="card p-4 shadow-sm">
+        <p>🌡 <strong>Temperature:</strong> {{ weather.temperature }} °C ({{ telugu_labels['Temperature'] }})</p>
+        <p>💧 <strong>Humidity:</strong> {{ weather.humidity }}% ({{ telugu_labels['Humidity'] }})</p>
+        <p>🌤 <strong>Condition:</strong> {{ weather.description }} ({{ telugu_labels['Condition'] }})</p>
+    </div>
+</div>
+{% endblock %}

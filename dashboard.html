@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block title %}Dashboard{% endblock %}
+{% block content %}
+{% set active='dashboard' %}
+<h2>Welcome, {{ farmer_name }}!</h2>
+
+<div class="card shadow p-3">
+  <h5>Weather Updates</h5>
+  <ul>
+    <li>Temperature: {{ weather.temperature }} °C</li>
+    <li>Humidity: {{ weather.humidity }}%</li>
+    <li>Condition: {{ weather.description }}</li>
+  </ul>
+</div>
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+    {% for category, message in messages %}
+      <div class="alert alert-{{ category }} mt-3">{{ message }}</div>
+    {% endfor %}
+  {% endif %}
+{% endwith %}
+{% endblock %}

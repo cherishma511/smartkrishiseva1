@@ -1,0 +1,171 @@
+{% extends "base.html" %}
+{% block title %}Smart Krishi Help Card{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+
+  <!-- Language Toggle -->
+  <div class="text-end mb-3">
+    <button id="langToggle" class="btn btn-outline-success rounded-pill shadow-sm">
+      🌐 తెలుగు / English
+    </button>
+  </div>
+
+  <h2 class="text-center mb-4" style="color:#1B5E20; font-weight:800;">
+    🌾 <span class="lang" data-en="Smart Krishi Help Card" data-te="స్మార్ట్ కృషి సహాయక కార్డ్">Smart Krishi Help Card</span>
+  </h2>
+
+  <!-- Input Form -->
+  <div class="card mx-auto shadow-lg p-4"
+       style="max-width:700px; border-radius:20px; background:linear-gradient(120deg,#E8F5E9,#F1F8E9); border:4px solid #81C784;">
+    <form id="krishiForm">
+      <div class="row mb-3">
+        <div class="col-md-6">
+          <label class="form-label fw-bold lang" data-en="Name" data-te="పేరు">Name</label>
+          <input type="text" id="name" class="form-control bilingual" 
+                 data-en-ph="Enter your name" data-te-ph="మీ పేరు నమోదు చేయండి" required>
+        </div>
+        <div class="col-md-6">
+          <label class="form-label fw-bold lang" data-en="Village" data-te="గ్రామం">Village</label>
+          <input type="text" id="village" class="form-control bilingual" 
+                 data-en-ph="Enter your village" data-te-ph="మీ గ్రామం నమోదు చేయండి" required>
+        </div>
+      </div>
+
+      <div class="row mb-3">
+        <div class="col-md-6">
+          <label class="form-label fw-bold lang" data-en="Mobile Number" data-te="మొబైల్ నంబర్">Mobile Number</label>
+          <input type="text" id="number" class="form-control bilingual"
+                 data-en-ph="Enter mobile number" data-te-ph="మొబైల్ నంబర్ ఇవ్వండి" required>
+        </div>
+        <div class="col-md-6">
+          <label class="form-label fw-bold lang" data-en="Crop" data-te="పంట">Crop</label>
+          <input type="text" id="crop" class="form-control bilingual" 
+                 data-en-ph="Enter crop (Wheat, Rice...)" data-te-ph="పంట పేరు (గోధుమ, బియ్యం...)" required>
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label fw-bold lang" data-en="Your Query" data-te="మీ ప్రశ్న">Your Query</label>
+        <textarea id="query" class="form-control bilingual" rows="3"
+                  data-en-ph="Describe your issue..." data-te-ph="మీ సమస్య వివరించండి..." required></textarea>
+      </div>
+
+      <div class="text-center">
+        <button type="submit" class="btn btn-success btn-lg px-4 rounded-pill shadow lang"
+                data-en="Submit Query" data-te="ప్రశ్నను సమర్పించండి">
+          Submit Query
+        </button>
+      </div>
+    </form>
+  </div>
+
+  <!-- Result Card -->
+  <div id="krishi-card" class="card mx-auto mt-5 shadow-lg p-4 text-center d-none"
+       style="max-width:750px; border-radius:20px; border:6px solid #2E7D32; background:linear-gradient(160deg,#F9FBE7,#DCEDC8);">
+    <h3 class="lang" data-en="🌿 Smart Krishi Seva Expert Solution" data-te="🌿 స్మార్ట్ కృషి సేవ నిపుణుల పరిష్కారం">
+      🌿 Smart Krishi Seva Expert Solution
+    </h3>
+    <p class="mt-2 text-muted lang" data-en="Guidance for Sustainable Crop Growth"
+       data-te="సుస్థిర పంట పెరుగుదల కోసం మార్గదర్శకత్వం">Guidance for Sustainable Crop Growth</p>
+
+    <hr style="border-top:2px solid #558B2F;">
+    <div class="text-start" style="font-size:1.05rem; line-height:1.8;">
+      <p><strong>👨‍🌾 <span class="lang" data-en="Name:" data-te="పేరు:">Name:</span></strong> <span id="outName"></span></p>
+      <p><strong>🏡 <span class="lang" data-en="Village:" data-te="గ్రామం:">Village:</span></strong> <span id="outVillage"></span></p>
+      <p><strong>🌾 <span class="lang" data-en="Crop:" data-te="పంట:">Crop:</span></strong> <span id="outCrop"></span></p>
+      <p><strong>💬 <span class="lang" data-en="Your Query:" data-te="మీ ప్రశ్న:">Your Query:</span></strong> <span id="outQuery"></span></p>
+    </div>
+
+    <div class="alert alert-success mt-3" style="border-radius:15px; font-weight:500;">
+      <i class="bi bi-lightbulb-fill"></i>
+      <span id="outSuggestion" style="color:#2E7D32; font-size:1.1rem;"></span>
+    </div>
+
+    <p class="mt-3 text-muted lang" style="font-size:0.95rem;"
+       data-en="This recommendation is based on Smart Krishi AI model and expert inputs."
+       data-te="ఈ సిఫార్సు స్మార్ట్ కృషి AI మోడల్ మరియు నిపుణుల సూచనల ఆధారంగా ఉంటుంది.">
+       This recommendation is based on Smart Krishi AI model and expert inputs.
+    </p>
+
+    <div class="text-center mt-4">
+      <button class="btn btn-warning btn-lg px-4 rounded-pill shadow lang"
+              onclick="downloadCard()" data-en="Download Help Card" data-te="సహాయక కార్డ్ డౌన్‌లోడ్ చేయండి">
+        Download Help Card
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+<script>
+// Crop suggestions
+const cropSuggestions = {
+  wheat: "Ensure irrigation during CRI and flowering stages. Use rust-resistant varieties and balanced fertilizers.",
+  rice: "Maintain standing water of 2-3 cm and control pests using neem-based pesticides.",
+  maize: "Apply nitrogen in 3 splits and ensure good drainage.",
+  cotton: "Spray neem oil to control bollworms and avoid waterlogging.",
+  sugarcane: "Provide regular irrigation, apply compost, and control pests with organic methods."
+};
+
+const cropSuggestionsTelugu = {
+  wheat: "సిఆర్‌ఐ మరియు పుష్పించే దశల్లో నీటిపారుదల నిర్ధారించండి. తుప్పు నిరోధక రకాలను ఉపయోగించండి.",
+  rice: "2-3 సెంటీమీటర్ల నీరు నిల్వ ఉంచి, నిమ్మ నూనె పురుగుమందులు వాడండి.",
+  maize: "నత్రజని మూడు దశల్లో వేయండి మరియు మంచి నీటి పారుదల కలిగి ఉండండి.",
+  cotton: "బోల్‌వార్మ్ నియంత్రణ కోసం నిమ్మ నూనె స్ప్రే చేయండి.",
+  sugarcane: "నియమిత నీటిపారుదల ఇవ్వండి, సేంద్రీయ ఎరువులు వేయండి."
+};
+
+// Submit form
+document.getElementById("krishiForm").addEventListener("submit", function(e) {
+  e.preventDefault();
+  const name = document.getElementById("name").value;
+  const village = document.getElementById("village").value;
+  const crop = document.getElementById("crop").value.toLowerCase();
+  const query = document.getElementById("query").value;
+  const lang = document.body.dataset.lang || "en";
+
+  document.getElementById("outName").innerText = name;
+  document.getElementById("outVillage").innerText = village;
+  document.getElementById("outCrop").innerText = crop;
+  document.getElementById("outQuery").innerText = query;
+
+  let suggestion = cropSuggestions[crop] || "Please provide correct crop name for advice.";
+  if (lang === "te") suggestion = cropSuggestionsTelugu[crop] || "దయచేసి సరైన పంట పేరు ఇవ్వండి.";
+
+  document.getElementById("outSuggestion").innerText = suggestion;
+  document.getElementById("krishi-card").classList.remove("d-none");
+});
+
+// PDF download
+function downloadCard() {
+  html2canvas(document.getElementById("krishi-card")).then(canvas => {
+    const { jsPDF } = window.jspdf;
+    const pdf = new jsPDF();
+    pdf.addImage(canvas.toDataURL("image/png"), "PNG", 10, 10, 190, 100);
+    pdf.save("SmartKrishi_HelpCard.pdf");
+  });
+}
+
+// Language toggle
+document.getElementById("langToggle").addEventListener("click", () => {
+  const currentLang = document.body.dataset.lang === "te" ? "en" : "te";
+  document.body.dataset.lang = currentLang;
+
+  document.querySelectorAll(".lang").forEach(el => {
+    el.textContent = currentLang === "te" ? el.dataset.te : el.dataset.en;
+  });
+  document.querySelectorAll(".bilingual").forEach(el => {
+    el.placeholder = currentLang === "te" ? el.dataset.tePh : el.dataset.enPh;
+  });
+});
+
+// Set default placeholders
+document.querySelectorAll(".bilingual").forEach(el => {
+  el.placeholder = el.dataset.enPh;
+});
+</script>
+{% endblock %}

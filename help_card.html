@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block title %}Krishi Help Card{% endblock %}
+{% block content %}
+<h2>Krishi Help Card</h2>
+<h5>Outdated Crops:</h5>
+<ul>
+  {% for crop in help_info.outdated_crops %}
+  <li>{{ crop }}</li>
+  {% endfor %}
+</ul>
+
+<h5>Modern Technologies:</h5>
+<ul>
+  {% for tech in help_info.modern_tech %}
+  <li>{{ tech }}</li>
+  {% endfor %}
+</ul>
+
+<p>Contact: {{ help_info.contact }}</p>
+{% endblock %}

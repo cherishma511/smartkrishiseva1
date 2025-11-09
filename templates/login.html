@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+
+{% block title %}Login | Smart Krishi Seva{% endblock %}
+
+{% block content %}
+<style>
+  .login-container {
+    max-width: 400px;
+    margin: 60px auto;
+    background: #ffffff;
+    padding: 35px 40px;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+  }
+
+  .login-container h2 {
+    text-align: center;
+    color: #2a9d8f;
+    margin-bottom: 25px;
+  }
+
+  .login-container label {
+    font-weight: 600;
+    display: block;
+    margin-top: 15px;
+    color: #264653;
+  }
+
+  .login-container input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    margin-top: 5px;
+    font-size: 15px;
+  }
+
+  .login-container button {
+    width: 100%;
+    margin-top: 25px;
+    background-color: #2a9d8f;
+    color: white;
+    border: none;
+    padding: 12px;
+    font-size: 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.3s;
+  }
+
+  .login-container button:hover {
+    background-color: #21867a;
+  }
+
+  .login-container p {
+    text-align: center;
+    margin-top: 15px;
+  }
+
+  .login-container a {
+    color: #e76f51;
+    text-decoration: none;
+    font-weight: 500;
+  }
+
+  .login-container a:hover {
+    text-decoration: underline;
+  }
+</style>
+
+<div class="login-container">
+  <h2>Login</h2>
+  <form action="/login" method="POST">
+    <label>Email</label>
+    <input type="email" name="email" placeholder="Enter your email" required>
+
+    <label>Password</label>
+    <input type="password" name="password" placeholder="Enter your password" required>
+
+    <button type="submit">Login</button>
+
+    <p>Don’t have an account? <a href="/signup">Create one</a></p>
+  </form>
+</div>
+
+{% endblock %}

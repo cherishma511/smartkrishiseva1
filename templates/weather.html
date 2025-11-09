@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block title %}Weather Updates{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="text-primary mb-4">🌦 Current Weather</h2>
+
+    <form method="POST" class="mb-4">
+        <input type="text" name="city" class="form-control" placeholder="Enter city name" required>
+        <button type="submit" class="btn btn-success mt-2">Check Weather</button>
+    </form>
+
+    {% if weather %}
+    <div class="card p-3 shadow-sm">
+        <h4>{{ weather.city }}</h4>
+        <p>🌡 {{ telugu_labels['Temperature'] }}: {{ weather.temperature }} °C</p>
+        <p>💧 {{ telugu_labels['Humidity'] }}: {{ weather.humidity }}%</p>
+        <p>🌤 {{ telugu_labels['Condition'] }}: {{ weather.condition }}</p>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
